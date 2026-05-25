@@ -1,0 +1,35 @@
+# Entorno
+.env
+.env.local
+.env.*.local
+
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Build
+dist/
+.next/
+out/
+build/
+
+# Logs
+*.log
+logs/
+
+# Temporales de procesamiento de vídeo
+/tmp/yt-dlp/
+/tmp/renders/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Remotion
+.cache/
+
+# Docker
+docker-compose.override.yml

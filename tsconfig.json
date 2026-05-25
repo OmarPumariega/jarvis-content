@@ -1,0 +1,12 @@
+{
+  "extends": "./packages/config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "references": [
+    { "path": "./apps/web" },
+    { "path": "./apps/video-engine" },
+    { "path": "./packages/database" },
+    { "path": "./packages/types" }
+  ]
+}
