@@ -1,5 +1,24 @@
 # Agent Log
 
+## 2026-05-27 — Fase 4: Integraciones IA
+
+- **Estado**: COMPLETADO
+- **Rama**: feature/database-and-auth
+- **Archivos creados**:
+  - `packages/types/src/heygen.ts` — schemas Zod: HeyGenVideoStatus, HeyGenAvatarVideoInput, CreateVideoResponse, VideoStatusResponse
+  - `packages/types/src/elevenlabs.ts` — schemas Zod: VoiceSettings, TTSRequest, CacheMeta
+  - `packages/types/src/opusclip.ts` — schemas Zod: JobStatus, CreateJobRequest, Clip, CreateJobResponse, JobStatusResponse
+  - `apps/web/src/services/heygen.ts` — createAvatarVideo, pollVideoUntilDone, generateAvatarVideo (con retry x3 + polling hasta 6 min)
+  - `apps/web/src/services/elevenlabs.ts` — synthesizeSpeech con caché doble: Redis (opcional) + filesystem `/tmp/elevenlabs-cache` SHA-256
+  - `apps/web/src/services/opusclip.ts` — createClipJob, pollClipJobUntilDone, detectViralClips (con retry x3 + polling hasta 10 min)
+- **Archivos modificados**:
+  - `apps/video-engine/workers/flows/trendCloning.ts` — llama HeyGen API directamente (generateHeyGenVideo + ElevenLabs cache); ya no requiere inputUrl pre-renderizado
+  - `apps/video-engine/workers/types.ts` — extendido con heygenAvatarId, heygenVoiceId, script, elevenlabsVoiceId, narrationText
+  - `apps/web/src/queues/types.ts` — sincronizado con video-engine/workers/types.ts
+  - `apps/web/src/app/api/videos/route.ts` — propaga campos HeyGen/ElevenLabs al job; usa spread condicional para exactOptionalPropertyTypes
+  - `packages/types/src/video.ts` — CreateVideoSchema extendido con campos opcionales de avatar y voz
+- **Notas**: TypeScript strict sin errores en ambos apps; z.input<> usado en opusclip para tipos de entrada con defaults Zod
+
 ## 2026-05-26 — Fase 3: Motor Local
 
 - **Estado**: COMPLETADO
