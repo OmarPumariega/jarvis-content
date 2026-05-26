@@ -32,6 +32,8 @@ export async function POST(req: Request) {
   const baseUrl = process.env['NEXTAUTH_URL'] ?? 'http://localhost:3000';
   const webhookUrl = `${baseUrl}/api/videos/callback`;
 
+  const { heygenAvatarId, heygenVoiceId, script, elevenlabsVoiceId, narrationText } = parsed.data;
+
   await videoQueue.add(`video-${video.id}`, {
     videoId: video.id,
     correlationId: video.correlationId,
@@ -39,6 +41,11 @@ export async function POST(req: Request) {
     flow: parsed.data.flow,
     inputUrl: parsed.data.inputUrl,
     webhookUrl,
+    ...(heygenAvatarId !== undefined && { heygenAvatarId }),
+    ...(heygenVoiceId !== undefined && { heygenVoiceId }),
+    ...(script !== undefined && { script }),
+    ...(elevenlabsVoiceId !== undefined && { elevenlabsVoiceId }),
+    ...(narrationText !== undefined && { narrationText }),
   });
 
   return NextResponse.json({ id: video.id, correlationId: video.correlationId }, { status: 201 });
