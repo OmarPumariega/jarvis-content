@@ -1,8 +1,8 @@
 import { auth } from '@/auth';
 import { db, videos } from '@jarvis/database';
-import { eq } from 'drizzle-orm';
 import { CreateVideoSchema } from '@jarvis/types';
 import { NextResponse } from 'next/server';
+import { videoQueue } from '@/queues/videoQueue';
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -25,5 +25,21 @@ export async function POST(req: Request) {
     })
     .returning();
 
-  return NextResponse.json(video, { status: 201 });
+  if (!video) {
+    return NextResponse.json({ error: 'Failed to create video record' }, { status: 500 });
+  }
+
+  const baseUrl = process.env['NEXTAUTH_URL'] ?? 'http://localhost:3000';
+  const webhookUrl = `${baseUrl}/api/videos/callback`;
+
+  await videoQueue.add(`video-${video.id}`, {
+    videoId: video.id,
+    correlationId: video.correlationId,
+    userId: session.user.id,
+    flow: parsed.data.flow,
+    inputUrl: parsed.data.inputUrl,
+    webhookUrl,
+  });
+
+  return NextResponse.json({ id: video.id, correlationId: video.correlationId }, { status: 201 });
 }

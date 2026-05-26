@@ -13,11 +13,13 @@
     "@auth/drizzle-adapter": "^1.4.0",
     "@jarvis/database": "workspace:*",
     "@jarvis/types": "workspace:*",
+    "bullmq": "^5.0.0",
     "drizzle-orm": "^0.30.0",
     "next": "^14.2.0",
     "next-auth": "^5.0.0-beta.25",
     "react": "^18.3.0",
-    "react-dom": "^18.3.0"
+    "react-dom": "^18.3.0",
+    "zod": "^3.23.0"
   },
   "devDependencies": {
     "@jarvis/config": "workspace:*",
