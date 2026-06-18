@@ -1,6 +1,10 @@
 {
   "extends": "@jarvis/config/tsconfig",
   "compilerOptions": {
+    "jsx": "preserve",
+    "lib": ["ES2022", "dom", "dom.iterable"],
+    "declaration": false,
+    "declarationMap": false,
     "plugins": [{ "name": "next" }],
     "paths": {
       "@/*": ["./src/*"]
